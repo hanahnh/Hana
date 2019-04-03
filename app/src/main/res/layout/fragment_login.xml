@@ -3,48 +3,67 @@
              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="#aa0000"
+             android:background="@drawable/gradient_back"
              tools:context=".LoginFragment">
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
                                                        android:layout_height="match_parent" android:layout_margin="8dp">
 
-        <ImageView android:layout_width="wrap_content" android:layout_height="100dp"
-                   app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                   app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                   app:layout_constraintTop_toTopOf="parent" android:id="@+id/imageView"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      android:layout_marginEnd="32dp"
+                      app:layout_constraintStart_toStartOf="parent"
+                      android:layout_marginStart="32dp"
+                      android:layout_marginTop="64dp"
+                      android:id="@+id/logo_layout"
+                      android:orientation="vertical"
+                      app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="32dp"
+                      app:layout_constraintBottom_toTopOf="@+id/linearLayout">
+            <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+                       android:id="@+id/imageView"
+                       android:src="@drawable/logo"
+                       android:scaleType="fitCenter"/>
+        </LinearLayout>
 
-        <Button
-                android:background="#FFFFFF"
+
+        <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/google"
-                android:text="Sign in with Google"
-                android:textSize="14sp"
-                android:drawableLeft="@drawable/googleg_standard_color_18"
-                android:paddingLeft="8dp"
-                android:gravity="center"
-                android:textColor="#000000"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"/>
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/logo_layout" android:layout_marginTop="32dp"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="32dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                app:layout_constraintVertical_bias="0.6" android:id="@+id/linearLayout">
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/google"
+                    android:text="Sign in with Google"
+                    android:textSize="14sp"
+                    style="@style/Widget.MaterialComponents.Button"
+                    app:icon="@drawable/googleg_standard_color_18"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/fb"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fb"
+                    android:text="@string/sign_in_with_facebook"
+                    android:textSize="14sp"
+                    style="@style/Widget.MaterialComponents.Button"
+                    app:icon="@drawable/fb_18"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                    android:layout_marginBottom="32dp" app:layout_constraintBottom_toBottomOf="parent"
+            >
 
-        <Button
-                android:background="#3B5998"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/fb"
-                android:text="@string/sign_up_with_facebook"
-                android:textSize="14sp"
-                android:drawableLeft="@drawable/com_facebook_button_icon_white"
-                android:paddingLeft="8dp"
-                android:gravity="center"
-                android:textColor="#ffffff" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/google"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp">
+            </com.google.android.material.button.MaterialButton>
+        </LinearLayout>
 
-        </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>

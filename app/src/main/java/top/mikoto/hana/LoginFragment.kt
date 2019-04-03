@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -24,6 +26,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.*
 
 
@@ -82,6 +85,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = mAuth.currentUser
+                    findNavController().navigate(R.id.createClubFragment)
                     //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -104,6 +108,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = mAuth.currentUser
+                    findNavController().navigate(R.id.createClubFragment)
                     //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -147,15 +152,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     }
 
-
-
     override fun onClick(v: View?) {
         when(v!!.id) {
             R.id.google -> {
                 val signInIntent = gsoClient.signInIntent
                 startActivityForResult(signInIntent, 9001)
             }
-
+            R.id.fb -> {
+                firebaseAuthWithFacebook()
+            }
         }
     }
 
@@ -163,9 +168,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(requireContext())
         val user = mAuth.currentUser
-        if(account == null)
+        if(user != null)
         {
-            //update UI to reveal sign in button
+            findNavController().navigate(R.id.createClubFragment)
         }
         //updateUI(account)
     }
@@ -180,6 +185,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
         */
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
         gsoClient = GoogleSignIn.getClient(requireActivity(),gso)
+
+        fb.setOnClickListener(this)
+        google.setOnClickListener(this)
     }
 
     override fun onCreateView(

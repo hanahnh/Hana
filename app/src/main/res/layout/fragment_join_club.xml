@@ -3,12 +3,54 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:background="@drawable/gradient_back"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              tools:context=".JoinClubFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                       android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
+        <LinearLayout android:layout_width="100dp" android:layout_height="wrap_content"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      android:layout_marginEnd="32dp"
+                      app:layout_constraintStart_toStartOf="parent"
+                      android:layout_marginStart="32dp"
+                      android:layout_marginTop="64dp"
+                      android:id="@+id/logo_layout"
+                      android:orientation="vertical"
+                      app:layout_constraintTop_toTopOf="parent">
+            <ImageView android:layout_width="100dp" android:layout_height="100dp"
+                       android:id="@+id/imageView"
+                       android:src="@drawable/logo"
+                       android:scaleType="fitCenter"/>
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="HNH"
+                      android:layout_marginTop="8dp"
+                      android:textColor="@color/colorAccent"
+                      android:textAlignment="center"
+                      android:textStyle="bold"
+                      android:textSize="36sp"
+            />
+        </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter code..."
+                android:textColorHint="@color/colorAccent"
+                app:passwordToggleEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:boxStrokeColor="@color/colorAccent"
+                android:id="@+id/textInputLayout2" app:layout_constraintTop_toBottomOf="@+id/logo_layout"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="text"
+                    android:textColor="#fff"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
