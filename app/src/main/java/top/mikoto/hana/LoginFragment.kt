@@ -41,6 +41,13 @@ import java.util.*
  * create an instance of this fragment.
  */
 class LoginFragment : Fragment(), View.OnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fb.setOnClickListener(this)
+        google.setOnClickListener(this)
+
+    }
+
     private lateinit var gsoClient : GoogleSignInClient
     private val mAuth : FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val mLoginManager : LoginManager by lazy { LoginManager.getInstance() }
@@ -48,15 +55,12 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         when(requestCode){
             9001 -> {
                 //Sign in with Google
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 handleSignInResult(task)
-            }
-            9002 -> {
-                //Sign in with Facebook
-                callbackManager.onActivityResult(requestCode, resultCode, data)
             }
         }
     }
@@ -82,7 +86,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    findNavController().navigate(R.id.createClubFragment)
+                    findNavController().navigate(R.id.joinClubFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -97,7 +101,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    findNavController().navigate(R.id.createClubFragment)
+                    findNavController().navigate(R.id.joinClubFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -110,7 +114,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private fun firebaseAuthWithFacebook()
     {
         callbackManager = CallbackManager.Factory.create()
-        mLoginManager.logInWithReadPermissions(this,Arrays.asList("public_profile","email","user_friends"))
+        mLoginManager.logInWithReadPermissions(this,Arrays.asList("public_profile","email"))
         mLoginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d(TAG, "facebook:onSuccess:$loginResult")
@@ -144,7 +148,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         val user = mAuth.currentUser
         if(user != null)
         {
-            findNavController().navigate(R.id.createClubFragment)
+            findNavController().navigate(R.id.joinClubFragment)
         }
     }
 
@@ -153,8 +157,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
         gsoClient = GoogleSignIn.getClient(requireActivity(),gso)
 
-        fb.setOnClickListener(this)
-        google.setOnClickListener(this)
+
     }
 
     override fun onCreateView(

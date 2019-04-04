@@ -10,6 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_join_club.*
+import top.mikoto.hana.models.Bungae
+import top.mikoto.hana.models.Club
+import top.mikoto.hana.models.Schedule
+import top.mikoto.hana.models.Used
+import top.mikoto.hana.utils.DBManager
+import java.sql.Timestamp
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -17,23 +25,38 @@ import kotlinx.android.synthetic.main.fragment_join_club.*
  * create an instance of this fragment.
  */
 class JoinClubFragment : Fragment(), View.OnClickListener {
+    private val dbManager by lazy { DBManager.getInstance(requireContext())}
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        join_club.setOnClickListener(this)
+        create_club.setOnClickListener(this)
+    }
+
     override fun onClick(v: View?) {
         when(v!!.id)
         {
             R.id.join_club -> {
-                startActivity(Intent(requireContext(),MainActivity::class.java))
-                requireActivity().finish()
+                dbManager.joinClub("test","반김준수")
+                //startActivity(Intent(requireContext(),MainActivity::class.java))
+                //requireActivity().finish()
             }
             R.id.create_club -> {
                 //create club
+
+                var schedule = ArrayList<Schedule>()
+                var member = ArrayList<String>()
+                member.add("김준수")
+                member.add("반준수")
+                schedule.add(Schedule("모임","김준수","test","서울특별시청",member, Timestamp(Date().time)))
+                dbManager.addClub(Club("test", schedule, Bungae("번개","반준수","선린인터넷고등학교",Timestamp(Date().time),member),ArrayList(), member))
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        join_club.setOnClickListener(this)
-        create_club.setOnClickListener(this)
+
     }
 
     override fun onCreateView(
