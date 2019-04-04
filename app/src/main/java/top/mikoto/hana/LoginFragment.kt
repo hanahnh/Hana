@@ -66,12 +66,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account!!)
             // Signed in successfully, show authenticated UI.
-            //updateUI(account)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.statusCode)
-            //updateUI(null)
         }
     }
 
@@ -84,54 +82,35 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    val user = mAuth.currentUser
                     findNavController().navigate(R.id.createClubFragment)
-                    //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                    //updateUI(null)
                 }
-
-                // ...
             }
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
-
         val credential = FacebookAuthProvider.getCredential(token.token)
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    val user = mAuth.currentUser
                     findNavController().navigate(R.id.createClubFragment)
-                    //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     Toast.makeText(requireContext(), "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    //updateUI(null)
                 }
-
-                // ...
             }
     }
-
-
-
-
 
     private fun firebaseAuthWithFacebook()
     {
         callbackManager = CallbackManager.Factory.create()
-        //add OnClickListener
         mLoginManager.logInWithReadPermissions(this,Arrays.asList("public_profile","email","user_friends"))
-        //here
         mLoginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d(TAG, "facebook:onSuccess:$loginResult")
@@ -140,16 +119,12 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
             override fun onCancel() {
                 Log.d(TAG, "facebook:onCancel")
-                // ...
             }
 
             override fun onError(error: FacebookException) {
                 Log.d(TAG, "facebook:onError", error)
-                // ...
             }
         })
-        // ...
-
     }
 
     override fun onClick(v: View?) {
@@ -166,23 +141,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        val account = GoogleSignIn.getLastSignedInAccount(requireContext())
         val user = mAuth.currentUser
         if(user != null)
         {
             findNavController().navigate(R.id.createClubFragment)
         }
-        //updateUI(account)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-        */
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
         gsoClient = GoogleSignIn.getClient(requireActivity(),gso)
 
