@@ -20,16 +20,20 @@ class JoinClubFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v!!.id)
         {
-            R.id.join -> {
+            R.id.join_club -> {
                 startActivity(Intent(requireContext(),MainActivity::class.java))
                 requireActivity().finish()
+            }
+            R.id.create_club -> {
+                //create club
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        join.setOnClickListener(this)
+        join_club.setOnClickListener(this)
+        create_club.setOnClickListener(this)
     }
 
     override fun onCreateView(

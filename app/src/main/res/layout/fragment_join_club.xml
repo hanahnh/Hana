@@ -58,7 +58,7 @@
             <com.google.android.material.button.MaterialButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/join"
+                    android:id="@+id/join_club"
                     android:text="Next"
                     android:textSize="14sp"
                     style="@style/Widget.MaterialComponents.Button"
@@ -104,7 +104,7 @@
             <com.google.android.material.button.MaterialButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/create"
+                    android:id="@+id/create_club"
                     android:text="CREATE NEW CLUB"
                     android:textSize="14sp"
                     style="@style/Widget.MaterialComponents.Button"
