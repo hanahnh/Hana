@@ -1,50 +1,74 @@
 package top.mikoto.hana.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import top.mikoto.hana.models.Club
-import java.lang.Exception
+import top.mikoto.hana.models.User
 
-class DBManager private constructor(private val context: Context){
-    private val mDatabase = FirebaseDatabase.getInstance().reference
 
-    fun addClub(club: Club)
-    {
-        mDatabase.child("clubs").child(club.title).setValue(club)
+class DBManager private constructor(private val context: Context) {
+    private val mFirestore = FirebaseFirestore.getInstance()
+    fun addClub(club: Club) {
+        //mDatabase.child("clubs").child(club.title).setValue(club)
+        //I think I should add sub-elements manually
+
+        //first, check the club id is exists
+        if(checkClubExists(club.title)) {
+            //add club document and add others literally
+            mFirestore.collection("clubs").document("test").set(club)
+        }
+
         //prevent uid mixing, overwrite member here
-        mDatabase.child("clubs").child(club.title).child("users").push().setValue(club.users)
+        //mDatabase.child("clubs").child(club.title).child("users").push().setValue(club.users)
     }
 
-    fun joinClub(id : String, user : String)
+    fun getJoinedClub(user: User)
     {
-        try {
-            mDatabase.child("clubs").child(id).child("users").orderByKey().limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-
+        mFirestore.collection("users").document(user.uid).collection("clubs").get().addOnCompleteListener {
+            if(it.isSuccessful){
+                //get clubs
+                for (document in it.result!!) {
+                    Log.d("MisakaMOE", document.id + " => " + document.data)
                 }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot)
-                {
-                    var str = dataSnapshot.value.toString().split("=")
-                    mDatabase.child("clubs").child(id).child("users").child((str[0].toInt()+1).toString()).setValue(user)
-                }
-            })
+            }
         }
-        catch (e : Exception)
-        {
-            Log.d("MisakaMOE",e.message)
+    }
+
+    fun checkClubExists(id: String): Boolean {
+        var isExists = false
+        mFirestore.collection("clubs").document(id).get().addOnSuccessListener {
+            if (it.exists()) {
+                Log.d("Misakamoe", "Collection Exists")
+                isExists = true
+            } else {
+                Log.d("MisakaMOE", "Collection Empty")
+            }
+        }
+        return isExists
+    }
+
+    fun addUser(user: User) {
+        mFirestore.collection("users").document(user.uid).set(user)
+    }
+
+    fun joinClub(id: String, user: User) {
+        try {
+            mFirestore.collection("clubs").document(id).collection("users").document(user.uid).set(user)
+        } catch (e: Exception) {
+            Log.d("MisakaMOE", e.message)
         }
     }
 
     companion object {
-        @Volatile private var INSTANCE: DBManager? = null
+        @SuppressLint("StaticFieldLeak")
+        @Volatile
+        private var INSTANCE: DBManager? = null
 
-        fun getInstance(context: Context) : DBManager {
-            if(INSTANCE == null)
+        fun getInstance(context: Context): DBManager {
+            if (INSTANCE == null)
+            //for prevent memory leak, use applicationContext instead of Activity
                 INSTANCE = DBManager(context.applicationContext)
             return INSTANCE!!
         }

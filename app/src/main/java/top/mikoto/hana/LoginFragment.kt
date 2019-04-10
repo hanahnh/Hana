@@ -15,6 +15,7 @@ import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -27,6 +28,8 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.fragment_login.*
+import top.mikoto.hana.models.User
+import top.mikoto.hana.utils.DBManager
 import java.util.*
 
 
@@ -55,12 +58,14 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        callbackManager.onActivityResult(requestCode, resultCode, data)
         when(requestCode){
             9001 -> {
                 //Sign in with Google
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 handleSignInResult(task)
+            }
+            CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode() -> {
+                callbackManager.onActivityResult(requestCode, resultCode, data)
             }
         }
     }
@@ -86,12 +91,20 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
+                    afterLoginSuccess()
                     findNavController().navigate(R.id.joinClubFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                 }
             }
+    }
+
+    private fun afterLoginSuccess() {
+        val currentUser = mAuth.currentUser!!
+        val mDBManager = DBManager.getInstance(requireContext())
+        val user = User(currentUser.uid, currentUser.displayName!!, currentUser.email!!)
+        mDBManager.addUser(user)
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
@@ -101,6 +114,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
+                    afterLoginSuccess()
                     findNavController().navigate(R.id.joinClubFragment)
                 } else {
                     // If sign in fails, display a message to the user.

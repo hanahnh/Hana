@@ -10,10 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_join_club.*
-import top.mikoto.hana.models.Bungae
-import top.mikoto.hana.models.Club
-import top.mikoto.hana.models.Schedule
-import top.mikoto.hana.models.Used
+import top.mikoto.hana.models.*
 import top.mikoto.hana.utils.DBManager
 import java.sql.Timestamp
 import java.util.*
@@ -37,7 +34,7 @@ class JoinClubFragment : Fragment(), View.OnClickListener {
         when(v!!.id)
         {
             R.id.join_club -> {
-                dbManager.joinClub("test","반김준수")
+                dbManager.joinClub("test", User("testUID","반김준수","hrh1110@naver.com"))
                 //startActivity(Intent(requireContext(),MainActivity::class.java))
                 //requireActivity().finish()
             }
@@ -50,6 +47,7 @@ class JoinClubFragment : Fragment(), View.OnClickListener {
                 member.add("반준수")
                 schedule.add(Schedule("모임","김준수","test","서울특별시청",member, Timestamp(Date().time)))
                 dbManager.addClub(Club("test", schedule, Bungae("번개","반준수","선린인터넷고등학교",Timestamp(Date().time),member),ArrayList(), member))
+
             }
         }
     }
