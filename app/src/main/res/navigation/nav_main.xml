@@ -2,4 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_main"
-/>
+            app:startDestination="@id/schduleFragment">
+    <fragment android:id="@+id/schduleFragment" android:name="top.mikoto.hana.SchduleFragment"
+              android:label="fragment_schdule" tools:layout="@layout/fragment_schdule"/>
+</navigation>

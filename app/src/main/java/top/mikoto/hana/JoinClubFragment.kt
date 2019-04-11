@@ -34,9 +34,9 @@ class JoinClubFragment : Fragment(), View.OnClickListener {
         when(v!!.id)
         {
             R.id.join_club -> {
-                dbManager.joinClub("test", User("testUID","반김준수","hrh1110@naver.com"))
-                //startActivity(Intent(requireContext(),MainActivity::class.java))
-                //requireActivity().finish()
+                //dbManager.joinClub("test", User("testUID","반김준수","hrh1110@naver.com"))
+                startActivity(Intent(requireContext(),MainActivity::class.java))
+                requireActivity().finish()
             }
             R.id.create_club -> {
                 //create club
