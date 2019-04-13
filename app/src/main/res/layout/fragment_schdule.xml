@@ -5,11 +5,11 @@
              android:layout_height="match_parent"
              tools:context=".SchduleFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-                                                       android:layout_height="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/scheduleRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    >
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>
