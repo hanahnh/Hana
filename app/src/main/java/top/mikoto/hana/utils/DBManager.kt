@@ -10,6 +10,9 @@ import top.mikoto.hana.models.User
 
 class DBManager private constructor(private val context: Context) {
     private val mFirestore = FirebaseFirestore.getInstance()
+    private val usersRef = mFirestore.collection("users")
+    private val clubsRef = mFirestore.collection("clubs")
+
     fun addClub(club: Club) {
         //mDatabase.child("clubs").child(club.title).setValue(club)
         //I think I should add sub-elements manually
